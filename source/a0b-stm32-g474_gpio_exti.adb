@@ -4,10 +4,24 @@
 --  SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 --
 
+with Ada.Unchecked_Conversion;
+
 with A0B.ARMv7M.NVIC_Utilities;
 with A0B.STM32G474.SVD.RCC;
 
 package body A0B.STM32.G474_GPIO_EXTI is
+
+   use type A0B.Types.Unsigned_32;
+
+   function As_Unsigned_32 is
+     new Ada.Unchecked_Conversion
+          (A0B.STM32G474.SVD.RCC.RCC_AHB2ENR_Register,
+           A0B.Types.Unsigned_32);
+
+   function As_RCC_AHB2ENR_Register is
+     new Ada.Unchecked_Conversion
+          (A0B.Types.Unsigned_32,
+           A0B.STM32G474.SVD.RCC.RCC_AHB2ENR_Register);
 
    ------------------------------------
    -- Clear_Pending_Enable_Interrupt --
@@ -35,40 +49,15 @@ package body A0B.STM32.G474_GPIO_EXTI is
    ------------------------
 
    procedure Disable_GPIO_Clock
-     (Identifier : A0B.STM32.GPIO_Controller_Identifier) is
+     (Identifier : A0B.STM32.GPIO_Controller_Identifier)
+   is
+      Val : constant A0B.Types.Unsigned_32 :=
+        As_Unsigned_32 (A0B.STM32G474.SVD.RCC.RCC_Periph.RCC_AHB2ENR)
+          and not A0B.Types.Shift_Left (1, Identifier'Enum_Rep);
+
    begin
-      case Identifier is
-         when A =>
-            A0B.STM32G474.SVD.RCC.RCC_Periph.RCC_AHB2ENR.GPIOAEN :=
-              A0B.STM32G474.SVD.RCC.B_0x0;
-
-         when B =>
-            A0B.STM32G474.SVD.RCC.RCC_Periph.RCC_AHB2ENR.GPIOBEN :=
-              A0B.STM32G474.SVD.RCC.B_0x0;
-
-         when C =>
-            A0B.STM32G474.SVD.RCC.RCC_Periph.RCC_AHB2ENR.GPIOCEN :=
-              A0B.STM32G474.SVD.RCC.B_0x0;
-
-         when D =>
-            A0B.STM32G474.SVD.RCC.RCC_Periph.RCC_AHB2ENR.GPIODEN :=
-              A0B.STM32G474.SVD.RCC.B_0x0;
-
-         when E =>
-            A0B.STM32G474.SVD.RCC.RCC_Periph.RCC_AHB2ENR.GPIOEEN :=
-              A0B.STM32G474.SVD.RCC.B_0x0;
-
-         when F =>
-            A0B.STM32G474.SVD.RCC.RCC_Periph.RCC_AHB2ENR.GPIOFEN :=
-              A0B.STM32G474.SVD.RCC.B_0x0;
-
-         when G =>
-            A0B.STM32G474.SVD.RCC.RCC_Periph.RCC_AHB2ENR.GPIOGEN :=
-              A0B.STM32G474.SVD.RCC.B_0x0;
-
-         when others =>
-            raise Program_Error;
-      end case;
+      A0B.STM32G474.SVD.RCC.RCC_Periph.RCC_AHB2ENR :=
+        As_RCC_AHB2ENR_Register (Val);
    end Disable_GPIO_Clock;
 
    -----------------------
@@ -96,40 +85,15 @@ package body A0B.STM32.G474_GPIO_EXTI is
    -----------------------
 
    procedure Enable_GPIO_Clock
-     (Identifier : A0B.STM32.GPIO_Controller_Identifier) is
+     (Identifier : A0B.STM32.GPIO_Controller_Identifier)
+   is
+      Value : constant A0B.STM32G474.SVD.RCC.RCC_AHB2ENR_Register :=
+        As_RCC_AHB2ENR_Register
+          (As_Unsigned_32 (A0B.STM32G474.SVD.RCC.RCC_Periph.RCC_AHB2ENR)
+             or A0B.Types.Shift_Left (1, Identifier'Enum_Rep));
+
    begin
-      case Identifier is
-         when A =>
-            A0B.STM32G474.SVD.RCC.RCC_Periph.RCC_AHB2ENR.GPIOAEN :=
-              A0B.STM32G474.SVD.RCC.B_0x1;
-
-         when B =>
-            A0B.STM32G474.SVD.RCC.RCC_Periph.RCC_AHB2ENR.GPIOBEN :=
-              A0B.STM32G474.SVD.RCC.B_0x1;
-
-         when C =>
-            A0B.STM32G474.SVD.RCC.RCC_Periph.RCC_AHB2ENR.GPIOCEN :=
-              A0B.STM32G474.SVD.RCC.B_0x1;
-
-         when D =>
-            A0B.STM32G474.SVD.RCC.RCC_Periph.RCC_AHB2ENR.GPIODEN :=
-              A0B.STM32G474.SVD.RCC.B_0x1;
-
-         when E =>
-            A0B.STM32G474.SVD.RCC.RCC_Periph.RCC_AHB2ENR.GPIOEEN :=
-              A0B.STM32G474.SVD.RCC.B_0x1;
-
-         when F =>
-            A0B.STM32G474.SVD.RCC.RCC_Periph.RCC_AHB2ENR.GPIOFEN :=
-              A0B.STM32G474.SVD.RCC.B_0x1;
-
-         when G =>
-            A0B.STM32G474.SVD.RCC.RCC_Periph.RCC_AHB2ENR.GPIOGEN :=
-              A0B.STM32G474.SVD.RCC.B_0x1;
-
-         when others =>
-            raise Program_Error;
-      end case;
+      A0B.STM32G474.SVD.RCC.RCC_Periph.RCC_AHB2ENR := Value;
    end Enable_GPIO_Clock;
 
 end A0B.STM32.G474_GPIO_EXTI;
