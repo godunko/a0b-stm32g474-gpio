@@ -8,12 +8,7 @@
 
 pragma Restrictions (No_Elaboration_Code);
 
-with A0B.STM32.G474_GPIO_EXTI;
+with A0B.STM32.G4_GPIO_EXTI.GPIOF.Lines;
 
-package A0B.STM32G4.G474.GPIO
-  with Preelaborate
-is
-
-   subtype GPIO_EXTI_Line is A0B.STM32.G474_GPIO_EXTI.EXTI.GPIO_EXTI_Line;
-
-end A0B.STM32G4.G474.GPIO;
+package A0B.STM32G474.GPIOF renames A0B.STM32.G4_GPIO_EXTI.GPIOF.Lines
+  with Preelaborate;
