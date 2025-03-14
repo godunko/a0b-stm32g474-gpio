@@ -1,6 +1,6 @@
 name = "a0b_stm32g474_gpio"
-description = "A0B: STM32G474 GPIO"
-version = "0.1.0-dev"
+description = "A0B: STM32G474 GPIO/EXTI"
+version = "0.1.0"
 
 authors = ["Vadim Godunko"]
 maintainers = ["Vadim Godunko <vgodunko@gmail.com>"]
