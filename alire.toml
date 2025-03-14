@@ -2,6 +2,7 @@ name = "a0b_stm32g474_gpio"
 description = "A0B: STM32G474 GPIO/EXTI"
 version = "0.1.0"
 
+website = "https://github.com/godunko/a0b-stm32g474-gpio"
 authors = ["Vadim Godunko"]
 maintainers = ["Vadim Godunko <vgodunko@gmail.com>"]
 maintainers-logins = ["godunko"]
